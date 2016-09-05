@@ -9,6 +9,10 @@ public class Zinssatz implements Serializable
     private final float MAX_ZINSSATZ = 0.5f;
     
     public Zinssatz(float zinssatz) {
+
+        if (zinssatz < 0.0f) {
+            throw new IllegalArgumentException("Zinssatz ist kleiner 0.0!");
+        }
         
         if (zinssatz <= MAX_ZINSSATZ) {
             this.zinssatz = zinssatz;
