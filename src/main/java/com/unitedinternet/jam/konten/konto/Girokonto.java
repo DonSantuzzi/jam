@@ -23,12 +23,26 @@ public class Girokonto extends Konto implements Zahlungsverkehrsfaehig, Serializ
         this.sollZinssatz = sollZinssatz;
     }
 
+    /**
+     * Zahlt ein
+     * @param betrag
+     * @exception Falls der Betrag negativ ist, wird eine {@link IllegalArgumentException} geworfen.
+     */
     public void einzahlen(float betrag) {
+
+        if (betrag < 0.0f) {
+            throw new IllegalArgumentException("Betrag darf nicht kleiner 0 sein");
+        }
+
         saldo += betrag;
     }
 
     @Override
     public boolean istBetragGedeckt(float betrag) {
+        if (betrag < 0.0f) {
+            throw new IllegalArgumentException("Betrag darf nicht kleiner 0 sein");
+        }
+
         return getSaldo() + getDispo() >= betrag;
     }
 
