@@ -1,5 +1,7 @@
 package com.unitedinternet.jam.konten.konto;
 
+import com.unitedinternet.jam.konten.konto.exception.KontoNichtGedecktException;
+
 import java.io.Serializable;
 
 /**
@@ -13,9 +15,6 @@ public class Girokonto extends Konto implements Zahlungsverkehrsfaehig, Serializ
     private float dispo;
     private Zinssatz sollZinssatz;
     private float kontoFuehrungsGebuehren = 10;
-    private String keks;
-    private String lolly;
-    private String pop;
     public static long serialVersionUID = 1;
     
     public Girokonto(Zinssatz sollZinssatz, String kontonummer) {
@@ -46,7 +45,16 @@ public class Girokonto extends Konto implements Zahlungsverkehrsfaehig, Serializ
         return getSaldo() + getDispo() >= betrag;
     }
 
-    public void auszahlen(float betrag) {
+    public void auszahlen(float betrag) throws KontoNichtGedecktException {
+
+        if (betrag < 0.0f) {
+            throw new IllegalArgumentException("Betrag ist negativ!");
+        }
+
+        if (! istBetragGedeckt(betrag)) {
+            throw new KontoNichtGedecktException(saldo + dispo);
+        }
+
         saldo -= betrag;
     }
     
@@ -83,18 +91,3 @@ public class Girokonto extends Konto implements Zahlungsverkehrsfaehig, Serializ
         saldo -= kontoFuehrungsGebuehren;
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -1,5 +1,6 @@
 package com.unitedinternet.jam.konten.konto;
 
+import com.unitedinternet.jam.konten.konto.exception.KontoNichtGedecktException;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -72,5 +73,101 @@ public class GirokontoTest {
         girokonto1.einzahlen(-1);
     }
 
+    @Test (expected = IllegalArgumentException.class)
+    public void istBetragGedecktNegativerBetrag() {
+        girokonto1.istBetragGedeckt(-5);
+    }
 
+    @Test
+    public void istBetragGedecktPositiv() {
+        assertThat(girokonto1.istBetragGedeckt(5), is(false));
+        girokonto1.einzahlen(20);
+        assertThat(girokonto1.istBetragGedeckt(5), is(true));
+    }
+
+    @Test
+    public void istBetragGedeckt00() {
+        assertThat(girokonto1.istBetragGedeckt(0.0f), is(true));
+    }
+
+    @Test
+    public void istBetragGedecktSaldo0PositiverDispo() {
+        assertThat(girokonto1.istBetragGedeckt(5), is(false));
+        girokonto1.setDispo(5);
+        assertThat(girokonto1.istBetragGedeckt(5), is(true));
+    }
+
+    @Test
+    public void istBetragGedecktSaldoNegativDispoGesetzt() throws KontoNichtGedecktException {
+        assertThat(girokonto1.istBetragGedeckt(5), is(false));
+        girokonto1.setDispo(10);
+        girokonto1.auszahlen(5);
+        assertThat(girokonto1.istBetragGedeckt(5), is(true));
+    }
+
+    @Test
+    public void istBetragGedecktSaldoNegativDispoReichtNichtAus() throws KontoNichtGedecktException {
+        assertThat(girokonto1.istBetragGedeckt(5), is(false));
+        girokonto1.setDispo(5);
+        girokonto1.auszahlen(5);
+        assertThat(girokonto1.istBetragGedeckt(5), is(false));
+    }
+
+    @Test (expected = KontoNichtGedecktException.class)
+    public void auszahlen10Saldo0() throws Exception {
+        girokonto1.auszahlen(10);
+    }
+
+    @Test (expected = IllegalArgumentException.class)
+    public void auszahlenNegativerBetrag() throws Exception {
+        girokonto1.auszahlen(-1);
+    }
+
+    @Test (expected = KontoNichtGedecktException.class)
+    public void auszahlenDispo5Auszahlen10() throws Exception {
+        girokonto1.setDispo(5);
+        girokonto1.auszahlen(10);
+    }
+
+    @Test (expected = KontoNichtGedecktException.class)
+    public void auszahlenEinzahlen5Auszahlen10() throws Exception {
+        girokonto1.einzahlen(5);
+        girokonto1.auszahlen(10);
+    }
+
+    @Test
+    public void auszahlen5Einzahlen5Auszahlen() throws KontoNichtGedecktException {
+        girokonto1.einzahlen(5);
+        assertThat(girokonto1.getSaldo(), is(5.0f));
+        girokonto1.auszahlen(5);
+        assertThat(girokonto1.getSaldo(), is(0.0f));
+    }
+
+    @Test
+    public void auszahlen5Einzahlen2Auszahlen() throws KontoNichtGedecktException {
+        girokonto1.einzahlen(5);
+        assertThat(girokonto1.getSaldo(), is(5.0f));
+        girokonto1.auszahlen(2);
+        assertThat(girokonto1.getSaldo(), is(3.0f));
+    }
+
+    @Test
+    public void auszahlen10EinzahlenMehrfachAuszahlen() throws KontoNichtGedecktException {
+        girokonto1.einzahlen(10);
+        assertThat(girokonto1.getSaldo(), is(10.0f));
+        girokonto1.auszahlen(5);
+        assertThat(girokonto1.getSaldo(), is(5.0f));
+        girokonto1.auszahlen(3);
+        assertThat(girokonto1.getSaldo(), is(2.0f));
+    }
+
+    @Test
+    public void auszahlen5Einzahlen5Dispo5Auszahlen() throws KontoNichtGedecktException {
+        girokonto1.einzahlen(5);
+        assertThat(girokonto1.getSaldo(), is(5.0f));
+        girokonto1.setDispo(5);
+        assertThat(girokonto1.getSaldo(), is(5.0f));
+        girokonto1.auszahlen(5);
+        assertThat(girokonto1.getSaldo(), is(0.0f));
+    }
 }
