@@ -1,6 +1,7 @@
 package com.unitedinternet.jam.konten.servlet;
 
 import com.unitedinternet.jam.konten.model.UserBean;
+import com.unitedinternet.jam.konten.model.ZeitBean;
 import com.unitedinternet.jam.konten.service.login.LoginService;
 
 import javax.servlet.ServletException;
@@ -26,7 +27,11 @@ public class LoginServlet extends HttpServlet {
 
                 UserBean userBean = new UserBean();
                 userBean.setUser("Wurstnase");
+
+                ZeitBean zeitBean = new ZeitBean();
+
                 request.getSession().setAttribute("userbean", userBean);
+                request.getSession().setAttribute("zeitBean", zeitBean);
 
                 response.sendRedirect("jsp/success.jsp");
             } else {
