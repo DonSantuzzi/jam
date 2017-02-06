@@ -5,6 +5,7 @@ import com.unitedinternet.jam.konten.model.ZeitBean;
 import com.unitedinternet.jam.konten.service.login.LoginService;
 
 import javax.servlet.ServletException;
+import javax.servlet.SingleThreadModel;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

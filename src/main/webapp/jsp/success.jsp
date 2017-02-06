@@ -19,6 +19,7 @@
 <body>
 
    Juhu, ich habe mich eingeloggt.
+
    Ich bin User <jsp:getProperty name="userbean" property="user" />
 <p />
 <hr />

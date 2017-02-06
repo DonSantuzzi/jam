@@ -6,7 +6,8 @@ package com.unitedinternet.jam.konten.service.login;
 public class LoginService {
     public boolean isLoginValid(String username, String passwort) {
 
-        if (username.equalsIgnoreCase("kekse") && passwort.equalsIgnoreCase("kekse"))
+        if (username.equalsIgnoreCase("kekse")
+                && passwort.equalsIgnoreCase("kekse"))
             return true;
         else
             return false;

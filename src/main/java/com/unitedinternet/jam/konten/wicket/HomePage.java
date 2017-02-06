@@ -9,6 +9,6 @@ import org.apache.wicket.protocol.http.WebApplication;
 public class HomePage extends WebApplication {
     @Override
     public Class<? extends Page> getHomePage() {
-        return LoginPage.class;
+        return Schnurpelgurke.class;
     }
 }
