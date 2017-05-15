@@ -1,5 +1,6 @@
 package com.unitedinternet.jam.konten.konto.tool;
 
+import com.unitedinternet.jam.konten.konto.Konto;
 import com.unitedinternet.jam.konten.konto.Zahlungsverkehrsfaehig;
 import com.unitedinternet.jam.konten.konto.exception.KontoNichtGedecktException;
 
@@ -13,11 +14,10 @@ public class Ueberweiser {
         if (sender.istBetragGedeckt(betrag)) {
             sender.auszahlen(betrag);
             empfaenger.einzahlen(betrag);
+            sender.bucheTransferGebuehren();
             System.out.println("Betrag in Höhe von " + betrag + " wurde erfolgreich überwiesen.");
         } else {
-            System.out.println("Vom Konto kann nicht überwiesen werden!");
+            System.out.println("Vom Konto " + ((Konto)sender).getKontonummer() + " kann nicht überwiesen werden!");
         }
     }
-
-    // TODO Trick mit dynamischem Typ
 }

@@ -12,4 +12,11 @@ public interface Zahlungsverkehrsfaehig {
     void einzahlen(float betrag);
 
     boolean istBetragGedeckt(float betrag);
-}
+
+    default void bucheTransferGebuehren()  {
+        try {
+            auszahlen(10);
+        } catch (KontoNichtGedecktException e) {
+            System.out.println("Gebühren können nicht abgezogen werden!");
+        }
+    }}

@@ -2,7 +2,7 @@ package com.unitedinternet.jam.konten.konto;
 
 import com.unitedinternet.jam.konten.konto.exception.KontoNichtGedecktException;
 
-public class Sparbuch extends Konto {
+public class Sparbuch extends Konto implements Zahlungsverkehrsfaehig {
 
 	private Zinssatz habenZinssatz;
 
@@ -21,7 +21,12 @@ public class Sparbuch extends Konto {
 		saldo += betrag;
 	}
 
-	@Override
+    @Override
+    public boolean istBetragGedeckt(float betrag) {
+        return betrag <= saldo;
+    }
+
+    @Override
 	public void auszahlen(float betrag) throws KontoNichtGedecktException {
 		if (saldo >= betrag) {
 			saldo -= betrag;
@@ -32,5 +37,10 @@ public class Sparbuch extends Konto {
 	
 	public void macheJahresAbschluss() {
 		saldo += saldo / 100 * habenZinssatz.gibWert();
+	}
+
+	@Override
+	public void bucheTransferGebuehren() {
+		throw new UnsupportedOperationException("Gebührenabzug nicht erlaubt!");
 	}
 }

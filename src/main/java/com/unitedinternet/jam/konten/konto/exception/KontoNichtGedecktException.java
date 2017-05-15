@@ -8,11 +8,11 @@ public class KontoNichtGedecktException extends Exception {
     private float auszahlbarerBetrag;
 
     public KontoNichtGedecktException(Throwable cause, float auszahlbarerBetrag) {
-        super("com.unitedinternet.jam.konten.konto.Konto nicht gedeckt", cause);
+        super("Konto nicht gedeckt", cause);
     }
 
     public KontoNichtGedecktException(float auszahlbarerBetrag) {
-        super("com.unitedinternet.jam.konten.konto.Konto ist nicht gedeckt!");
+        super("Konto ist nicht gedeckt!");
         this.auszahlbarerBetrag = auszahlbarerBetrag;
     }
 
