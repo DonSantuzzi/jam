@@ -3,6 +3,7 @@ package com.unitedinternet.jam.konten.konto;
 import com.unitedinternet.jam.konten.konto.exception.KontoNichtGedecktException;
 
 import java.io.Serializable;
+import java.util.Optional;
 
 /**
  * Write a description of class com.unitedinternet.jam.konten.konto.Girokonto here.
@@ -13,13 +14,17 @@ import java.io.Serializable;
 public class Girokonto extends Konto implements Zahlungsverkehrsfaehig, Serializable
 {
     private float dispo;
-    private Zinssatz sollZinssatz;
+    private Optional<Zinssatz> sollZinssatz;
     private float kontoFuehrungsGebuehren = 10;
     public static long serialVersionUID = 1;
-    
+
+    public Girokonto(String kontonummer) {
+        this(null, kontonummer);
+    }
+
     public Girokonto(Zinssatz sollZinssatz, String kontonummer) {
         super(kontonummer);
-        this.sollZinssatz = sollZinssatz;
+        this.sollZinssatz = Optional.ofNullable(sollZinssatz);
     }
 
     /**
@@ -70,17 +75,24 @@ public class Girokonto extends Konto implements Zahlungsverkehrsfaehig, Serializ
         return dispo;
     }
     
-    public Zinssatz getSollZinssatz() {
+    public Optional<Zinssatz> getSollZinssatz() {
         return sollZinssatz;
     }
     
     public void setSollZinssatz(Zinssatz sollZinssatz) {
-        this.sollZinssatz = sollZinssatz;
+        this.sollZinssatz = Optional.ofNullable(sollZinssatz);
     }
     
     public float berechneSollzinsen() {
+
+        if (! sollZinssatz.isPresent()) {
+            return 0;
+        }
+
+        float wert = sollZinssatz.orElse(new Zinssatz(0.1F)).gibWert();
+
         if (saldo < 0) {
-            return saldo / 100 * sollZinssatz.gibWert() / 360 * -1;
+            return saldo / 100 * sollZinssatz.get().gibWert() / 360 * -1;
         }
         
         return 0;
