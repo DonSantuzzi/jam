@@ -33,5 +33,23 @@ public class KontoStream {
                 //.mapToDouble(g -> g.getSaldo())
                 //.sum());
 
+        List<Girokonto> konten = IntStream.range(1, 100_000)
+            .mapToObj(i -> new Girokonto(i + ""))
+            .collect(Collectors.toList());
+
+        OutputStream out = Files.newOutputStream(
+                Paths.get("/Users/agrunow/Documents/workspace_intellij/jam-konten/src/main/resources/konten_wurst.csv"),
+                StandardOpenOption.CREATE_NEW);
+
+        konten.stream().forEach(g -> {
+            try {
+                out.write(g.toString().getBytes());
+                out.write("\n".getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        out.close();
     }
 }
