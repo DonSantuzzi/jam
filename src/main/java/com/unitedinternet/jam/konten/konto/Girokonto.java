@@ -4,6 +4,8 @@ import com.unitedinternet.jam.konten.konto.exception.KontoNichtGedecktException;
 
 import java.io.Serializable;
 import java.util.Optional;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 /**
  * Write a description of class com.unitedinternet.jam.konten.konto.Girokonto here.
@@ -20,6 +22,11 @@ public class Girokonto extends Konto implements Zahlungsverkehrsfaehig, Serializ
 
     public Girokonto(String kontonummer) {
         this(null, kontonummer);
+    }
+
+    public Girokonto(String kontonummer, float saldo) {
+        this(kontonummer);
+        this.saldo = saldo;
     }
 
     public Girokonto(Zinssatz sollZinssatz, String kontonummer) {

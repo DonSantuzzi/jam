@@ -22,7 +22,6 @@ public class KontenStarter {
     public static void main(String[] args) throws IOException, ClassNotFoundException {
         Zinssatz zinssatz = new Zinssatz(0.3f);
 
-        ThreadLocal
 
         Kunde mueller = new Kunde("Hans Mueller");
         mueller.erzeugeGirokonto(zinssatz);
